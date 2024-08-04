@@ -1,0 +1,25 @@
+services:
+  blog-post:
+    container_name: blog-post
+    build: .
+    volumes:
+      - ./laravel-app:/var/www/html:delegated
+      - ./vhost/blog-post.conf:/etc/apache2/sites-enabled/blog-post.conf:delegated
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - 9000:80
+      - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+  mysql_db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog
+      ports:
+        -3306:3306
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 9001:80
+    environment:
+      - PMA_ARBITRARY=1
