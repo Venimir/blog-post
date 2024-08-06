@@ -57,17 +57,7 @@ class PostDataTable extends DataTable
             ->setTableAttributes([
                 'style' => 'width: 100%',
             ])
-            ->parameters([
-                'columnDefs' => [
-                    ['targets' => [0], 'width' => '5%'],
-                    ['targets' => [1], 'width' => '15%'],
-                    ['targets' => [2], 'width' => '50%'],
-                    ['targets' => [3], 'width' => '10%'],
-                    ['targets' => [4], 'width' => '10%'],
-                    ['targets' => [5], 'width' => '10%'],
-                ],
-            ])
-//            ->columnDefs()
+            ->parameters($this->getColumnDefs())
             ->pageLength(5)
             ->setTableId('post-table')
             ->columns($this->getColumns())
@@ -106,6 +96,24 @@ class PostDataTable extends DataTable
         }
 
         return $columns;
+    }
+
+    protected function getColumnDefs(): array
+    {
+        $columnDefs = [
+            'columnDefs' => [
+                ['targets' => [0], 'width' => '5%'],
+                ['targets' => [1], 'width' => '15%'],
+                ['targets' => [2], 'width' => '50%'],
+                ['targets' => [3], 'width' => '10%'],
+                ['targets' => [4], 'width' => '10%'],
+            ],
+        ];
+        if (auth()->user()->can('delete_posts')) {
+            $columnDefs['columnDefs'][] = ['targets' => [5], 'width' => '10%'];
+        }
+
+        return $columnDefs;
     }
 
     /**
