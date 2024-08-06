@@ -9,6 +9,25 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * Table: users
+ *
+ * === Columns ===
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property \Carbon\Carbon|null $email_verified_at
+ * @property string $password
+ * @property string|null $remember_token
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ *
+ * === Relationships ===
+ * @property-read \Laravel\Sanctum\PersonalAccessToken|null $tokens
+ * @property-read \Illuminate\Notifications\DatabaseNotification|null $notifications
+ * @property-read \Spatie\Permission\Models\Role[]|\Illuminate\Database\Eloquent\Collection $roles
+ * @property-read \Spatie\Permission\Models\Permission[]|\Illuminate\Database\Eloquent\Collection $permissions
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;

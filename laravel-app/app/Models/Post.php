@@ -5,6 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Table: posts
+ *
+ * === Columns ===
+ * @property int $id
+ * @property string $title
+ * @property string $body
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ *
+ * === Relationships ===
+ * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\Comment|null $replyComments
+ * @property-read \App\Models\Comment|null $parentComments
+ */
 class Post extends Model
 {
     use HasFactory;

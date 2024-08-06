@@ -29,6 +29,9 @@ class PostDataTable extends DataTable
                 if (auth()->user()->can('delete_posts')) {
                    return link_to(route('post.destroy', $model->id), 'Delete Post', ['class' => 'btn btn-sm btn-danger ms-2'], null, false);
                 }
+            })
+            ->editColumn('created_at', function ($model) {
+                return $model->created_at->format('Y-m-d H:i:s');
             });
     }
 
@@ -54,6 +57,17 @@ class PostDataTable extends DataTable
             ->setTableAttributes([
                 'style' => 'width: 100%',
             ])
+            ->parameters([
+                'columnDefs' => [
+                    ['targets' => [0], 'width' => '5%'],
+                    ['targets' => [1], 'width' => '15%'],
+                    ['targets' => [2], 'width' => '50%'],
+                    ['targets' => [3], 'width' => '10%'],
+                    ['targets' => [4], 'width' => '10%'],
+                    ['targets' => [5], 'width' => '10%'],
+                ],
+            ])
+//            ->columnDefs()
             ->pageLength(5)
             ->setTableId('post-table')
             ->columns($this->getColumns())
@@ -79,7 +93,7 @@ class PostDataTable extends DataTable
         $columns = [
             Column::make('id'),
             Column::make('title'),
-            Column::make('body')->width(50),
+            Column::make('body'),
             Column::make('created_at'),
             Column::computed('show')
                 ->exportable(false)
@@ -87,7 +101,7 @@ class PostDataTable extends DataTable
                 ->addClass('text-center'),
         ];
 
-        if (auth()->user()->can('delete-posts')) {
+        if (auth()->user()->can('delete_posts')) {
             $columns[] = Column::computed('delete');
         }
 
