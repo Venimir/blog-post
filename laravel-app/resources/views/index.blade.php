@@ -9,7 +9,9 @@
                         Posts Overview
                     </div>
                     <div class="card-body">
+                        @can('create_posts')
                         <a href="{{route('post.create')}}" class="btn btn-success mb-3 ms-3">Create a Post</a>
+                        @endcan
                         @include('post.posts')
                     </div>
                 </div>

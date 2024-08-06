@@ -26,7 +26,9 @@ class PostDataTable extends DataTable
                 return link_to(route('post.show', $model->id), 'Show Post', ['class' => 'btn btn-sm btn-primary'], null, false);
             })
             ->addColumn('delete', function ($model) {
-                return link_to(route('post.destroy', $model->id), 'Delete Post', ['class' => 'btn btn-sm btn-danger ms-2'], null, false);
+                if (auth()->user()->can('delete_posts')) {
+                   return link_to(route('post.destroy', $model->id), 'Delete Post', ['class' => 'btn btn-sm btn-danger ms-2'], null, false);
+                }
             });
     }
 
@@ -48,8 +50,6 @@ class PostDataTable extends DataTable
      */
     public function html(): HtmlBuilder
     {
-        \Log::info(['PARAMS' => $this->getBuilderParameters()]);
-        \Log::info(__FILE__ . ' on line: ' . __LINE__);
         return $this->builder()
             ->setTableAttributes([
                 'style' => 'width: 100%',
@@ -76,17 +76,22 @@ class PostDataTable extends DataTable
      */
     protected function getColumns()
     {
-        return [
+        $columns = [
             Column::make('id'),
             Column::make('title'),
             Column::make('body')->width(50),
             Column::make('created_at'),
-            Column::computed('show'),
-            Column::computed('delete')
+            Column::computed('show')
                 ->exportable(false)
                 ->printable(false)
                 ->addClass('text-center'),
         ];
+
+        if (auth()->user()->can('delete-posts')) {
+            $columns[] = Column::computed('delete');
+        }
+
+        return $columns;
     }
 
     /**

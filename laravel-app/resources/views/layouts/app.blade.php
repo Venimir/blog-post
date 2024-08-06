@@ -54,8 +54,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('post.index') }}">{{ __('Posts') }}</a>
                             </li>
+                            @can('manage_users')
                             <li><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
+                            @endcan
+                            @can('manage_users')
                             <li><a class="nav-link" href="{{ route('roles.index') }}">Manage Role</a></li>
+                            @endcan
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}

@@ -45,12 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/comment/store', [CommentController::class, 'store'])->name('comment.add');
     Route::post('/reply/store', [CommentController::class, 'replyStore'])->name('reply.add');
     Route::get('/post/destroy/{post}', [PostController::class, 'destroy'])->name('post.destroy');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class)->middleware('can:manage_roles');
+    Route::resource('users', UserController::class)->middleware('can:manage_users');
 
 });
 

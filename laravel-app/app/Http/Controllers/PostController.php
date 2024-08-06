@@ -7,6 +7,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -25,6 +26,10 @@ class PostController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('create_posts')) {
+            abort(403);
+        }
+
         return view('post');
     }
 
@@ -34,6 +39,10 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+        if (!Gate::allows('create_posts')) {
+            abort(403);
+        }
+
         Post::create($request->validated());
 
         return redirect('posts');
@@ -46,6 +55,10 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+        if (!Gate::allows('delete_posts')) {
+            abort(403);
+        }
+
         $post->delete();
         return back();
     }
